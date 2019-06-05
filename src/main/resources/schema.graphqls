@@ -1,0 +1,45 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type List {
+  id:ID!
+  name:String
+  position:Int
+  # if 'positions' is included items in only those positions are considered,
+  # else all items in the list are considered
+  items(positions:[Int]):[Item]
+}
+
+type Item {
+  id: ID!
+  name: String
+  listId: Int
+  position: Int
+}
+
+type Query {
+  # if 'positions' is included lists in only those positions are considered,
+  # else all lists are considered
+  lists(positions:[Int]):[List]
+}
+
+input createItemInput {
+   name: String
+   listId: Int!
+}
+
+input moveItemInput {
+  listId: Int
+  position: Int
+}
+
+type Mutation {
+  createItem(input: createItemInput): Item
+  createList(name:String): List
+  updateList(id:ID!, name:String): Item
+  moveItem(id:ID!, input: moveItemInput): Item
+  deleteItem(id:ID!): Boolean
+  deleteList(id:ID!): Boolean
+}
